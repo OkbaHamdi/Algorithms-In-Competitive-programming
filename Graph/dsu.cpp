@@ -15,6 +15,7 @@ struct dsu{
     void join(ll u,ll v){
         u = find_root(u);
         v = find_root(v);
+        if(u==v)return;
         if (groupsize[u] < groupsize[v]) swap(u, v);
         root[v] = u;
         groupsize[u] += groupsize[v];
