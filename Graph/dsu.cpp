@@ -1,4 +1,4 @@
-//class
+//struct
 typedef long long ll;
 struct dsu{
      vector<ll> root, groupsize;
