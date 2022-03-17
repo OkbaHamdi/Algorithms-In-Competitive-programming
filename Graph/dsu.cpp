@@ -7,7 +7,7 @@ struct dsu{
     {
         groupsize.resize(n + 1, 1);
         root.resize(n + 1);
-        for (ll i = 1; i < n; i++) root[i] = i;
+        for (ll i = 1; i <=n; i++) root[i] = i;
     }
 
     ll find_root(ll u)  {return (root[u] == u) ? u : root[u] = find_root(root[u]);}
