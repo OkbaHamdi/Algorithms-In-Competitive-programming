@@ -1,6 +1,6 @@
 //class
 typedef long long ll;
-class dsu{
+struct dsu{
      vector<ll> root, groupsize;
 
     dsu(ll n)
