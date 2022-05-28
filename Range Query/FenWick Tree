@@ -1,0 +1,17 @@
+typedef         long long ll;
+const           ll N=2e5+2;
+vector<ll> BiTree(N);
+void update(ll pos,ll val,ll n){
+    while(pos<=n){
+        BiTree[pos]+=val;
+        pos+=(pos)&(-pos);
+    }
+}
+ll get_range(ll pos){
+    ll res=0;
+    while(pos>0){
+        res+=BiTree[pos];
+        pos-=(pos)&(-pos);
+    }
+    return res;
+}
