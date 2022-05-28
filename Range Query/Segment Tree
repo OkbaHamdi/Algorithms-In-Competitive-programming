@@ -1,0 +1,25 @@
+typedef         long long ll;
+const           ll N=1e5+2;
+ll tree[N*4];
+void make_tree(ll tab[],ll n){
+    for(ll i=0;i<n;i++)tree[n+i]=tab[i];
+    for(ll i=n-1;i>0;i--)tree[i]=tree[i<<1]+tree[i<<1|1];
+}
+void update_tree(ll ind,ll val,ll n){
+    tree[n+ind]=val;
+    for(ll i=n+ind;i>1;i>>=1)tree[i>>1]=tree[i]+tree[i^1];
+}
+ll seg_query(ll l, ll r,ll n){
+    ll res=0;
+    l+=n;r+=n;
+    for (; l < r; l >>= 1, r >>= 1){
+            cout<<l<<" "<<r<<endl;
+        if (l&1)
+        {cout<<l<<" l"<<endl;
+            res += tree[l++];}
+
+        if (r&1)
+            {res += tree[--r];cout<<r<<" r"<<endl;}
+    }
+    return res;
+}
