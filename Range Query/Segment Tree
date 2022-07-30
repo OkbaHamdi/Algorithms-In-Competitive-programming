@@ -1,20 +1,34 @@
 typedef         long long ll;
 const           ll N=1e5+2;
-ll tree[N*4];
+vector<ll> seg;
+ll sz=1;
 void make_tree(ll tab[],ll n){
-    for(ll i=0;i<n;i++)tree[n+i]=tab[i];
-    for(ll i=n-1;i>0;i--)tree[i]=tree[i<<1]+tree[i<<1|1];
+    while(sz<n)sz*=2;
+    seg.resize(2*sz);
+    for(ll i=0;i<n;i++)seg[sz-1+i]=tab[i];
+    for(ll i=sz-2;i>=0;i--)seg[i]=seg[2*i+1]+seg[2*i+2];
 }
-void update_tree(ll ind,ll val,ll n){
-    tree[n+ind]=val;
-    for(ll i=n+ind;i>1;i>>=1)tree[i>>1]=tree[i]+tree[i^1];
+void update_tree(ll ind,ll val){
+    seg[sz-1+ind]=val;
+    ll cur=sz-1+ind;
+    while(cur){
+        if(cur%2==0)cur--;
+        cur/=2;
+        seg[cur]=seg[2*cur+1]+seg[2*cur+2];
+    }
 }
-ll seg_query(ll l, ll r,ll n){
-    ll res=0;
-    l+=n;r+=n;
-    for (; l < r; l >>= 1, r >>= 1){
-        if (l&1)res += tree[l++];
-        if (r&1)res += tree[--r];
+ll seg_O(ll ind){
+    ll res=seg[ind+sz-1];
+    ll cur=ind+sz-1;
+    while(cur){
+        ll temp=cur;
+        if(cur%2==0)cur--;
+        cur/=2;
+        if(temp%2==0)res+=seg[temp-1];
     }
     return res;
+}
+ll seg_query(ll left,ll right){
+    if(!left)return seg_O(right);
+    return seg_O(right)-seg_O(left-1);
 }
