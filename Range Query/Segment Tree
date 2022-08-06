@@ -1,31 +1,28 @@
-const int N = 2e5;
-int t[2 * N];
-int n;
-
-// change the neutral element and the query function depending on the problem
-const int neutral = 0;
-inline int f(int x, int y) { return x + y; }
-
-// the tree is 0-indexed
-void build()
-{
-    for (int i = 0; i < n; i++) cin >> t[i + n];
-    for (int i = n - 1; i > 0; i--) t[i] = f(t[i << 1], t[i << 1 | 1]);
+vl seg_tree,tab;
+ll n;
+void make_tree(){
+    tab.resize(n);
+    rep(i,0,n)cin>>tab[i];
+    n = (1 << ((n&(n-1)) ? 32 : 31)- __builtin_clz(n));
+    seg_tree.resize(2 * n,0);
+    for (int i = 0; i < tab.size(); i++)
+        seg_tree[i + n] = tab[i];
+    for (int i = n - 1; i >= 0; i--)
+        seg_tree[i] = seg_tree[i * 2] + seg_tree[i * 2 + 1];
 }
-
-void update(int p, int value)
-{
-    for (t[p += n] = value; p > 1; p >>= 1) t[p >> 1] = f(t[p], t[p ^ 1]);
+void update_tree(ll ind,ll val){
+    seg_tree[n+ind]=val;
+    for(ll i=n+ind;i>1;i>>=1)seg_tree[i>>1]=seg_tree[i]+seg_tree[i^1];
 }
+ll seg_query(ll l, ll r){
+    ll res=0;
+    l+=n;r+=n;
+    for (; l < r; l >>= 1, r >>= 1){
+        if (l&1)
+            res = seg_tree[l++]+res;
 
-// query the range [l, r], l and r are inclusive
-int query(int l, int r)
-{
-    int ans = neutral;
-    for (l += n, r += n + 1; l < r; l >>= 1, r >>= 1)
-    {
-        if (l & 1) ans = f(ans, t[l++]);
-        if (r & 1) ans = f(ans, t[--r]);
+        if (r&1)
+            res = seg_tree[--r]+res;
     }
-    return ans;
+    return res;
 }
