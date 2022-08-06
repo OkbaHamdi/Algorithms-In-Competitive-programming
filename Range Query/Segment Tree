@@ -26,3 +26,4 @@ ll seg_query(ll l, ll r){
     }
     return res;
 }
+//seg_query(l,r-1)
