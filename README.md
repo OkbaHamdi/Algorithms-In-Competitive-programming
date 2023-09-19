@@ -1,2 +1,2 @@
 # Algorithmes-In-Competitive-programming
-Some helpful algorithms
+My personal collection of competitive programming code, templates, tools...
