@@ -1,29 +1,67 @@
-vl seg_tree,tab;
-ll n;
-void make_tree(){
-    tab.resize(n);
-    rep(i,0,n)cin>>tab[i];
-    n = (1 << ((n&(n-1)) ? 32 : 31)- __builtin_clz(n));
-    seg_tree.resize(2 * n,0);
-    for (int i = 0; i < tab.size(); i++)
-        seg_tree[i + n] = tab[i];
-    for (int i = n - 1; i >= 0; i--)
-        seg_tree[i] = seg_tree[i * 2] + seg_tree[i * 2 + 1];
-}
-void update_tree(ll ind,ll val){
-    seg_tree[n+ind]=val;
-    for(ll i=n+ind;i>1;i>>=1)seg_tree[i>>1]=seg_tree[i]+seg_tree[i^1];
-}
-ll seg_query(ll l, ll r){
-    ll res=0;
-    l+=n;r+=n;
-    for (; l < r; l >>= 1, r >>= 1){
-        if (l&1)
-            res = seg_tree[l++]+res;
-
-        if (r&1)
-            res = seg_tree[--r]+res;
+template <typename T, class F = function<T(const T&, const T&)>>
+class SegmentTree {
+    T NEUTRAL;
+    int n;
+    vector<T> tree;
+    F func;
+public:
+    //with vector
+    SegmentTree(const vector<T> &values, T neutral, const F& f) : func(f) {
+        NEUTRAL = neutral;
+        n = values.size();
+        tree.resize(n*2);
+        // Build
+        for (int i=0; i < n; i++) {
+            tree[n+i] = values[i];
+        }
+        for (int i = n - 1; i > 0; --i) {
+            tree[i] = func(tree[i*2], tree[i*2+1]);
+        }
     }
-    return res;
-}
-//seg_query(l,r-1)
+    // without vector
+    SegmentTree(int sz,T value,T neutral, const F& f) : func(f) {
+        NEUTRAL = neutral;
+        n = sz;
+        tree.resize(n*2);
+        // Build
+        for (int i=0; i < n; i++) {
+            tree[n+i] = value;
+        }
+        for (int i = n - 1; i > 0; --i) {
+            tree[i] = func(tree[i*2], tree[i*2+1]);
+        }
+    }
+
+    void update(int index, T value) {
+        tree[index+n] = value;
+        index = index + n;
+        for (int i = index; i > 1; i >>= 1){
+            tree[i/2] = func(tree[i], tree[i^1]);
+        }
+    }
+
+    T query(int l, int r) {
+        T ans = NEUTRAL;
+        for (l += n, r += n+1; l < r; l >>= 1, r >>= 1) {
+            if (l&1) {
+                ans = func(ans, tree[l++]);
+            }
+            if (r&1) {
+                ans = func(ans, tree[--r]);
+            }
+        }
+        return ans;
+    }
+};
+/*
+  the tree is 0-indexed
+  query the range [l, r], l and r are inclusive
+  usage:
+  with vector
+  auto func = [&](ll a, ll b) -> ll { return a+b;};
+  SegmentTree<ll> st(v,0,func);
+  or:
+  without vector
+  auto func = [&](ll a, ll b) -> ll { return a+b;};
+  SegmentTree<ll> st(n,val,0,func);
+*/
