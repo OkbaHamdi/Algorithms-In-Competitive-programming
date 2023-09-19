@@ -1,4 +1,3 @@
-const           int L = log2(N)+1;
 int po[L];
 vector<int> adj[N];
 int par[N][L];
@@ -18,3 +17,25 @@ void dfs(int u, int p) {
         dfs(v, u);
     }
 }
+
+int getlca(int u, int v) {
+    if (depth[u] < depth[v]) swap(u, v);
+    int l = depth[u] - depth[v];
+    for (int i = L - 1; i >= 0; i--) {
+        if (po[i] <= l) {
+            u = par[u][i];
+            l -= po[i];
+        }
+    }
+    for (int i = L - 1; i >= 0; i--) {
+        if (par[u][i] != par[v][i]) {
+            u = par[u][i];
+            v = par[v][i];
+        }
+    }
+    if (u != v) {
+        u = par[u][0];
+    }
+    return u;
+}
+int getdist(int u, int v) { return depth[u] + depth[v] - 2 * depth[getlca(u, v)]; }
