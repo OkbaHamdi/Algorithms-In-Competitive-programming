@@ -1,17 +1,30 @@
-typedef         long long ll;
-const           ll N=2e5+2;
-vector<ll> BiTree(N);
-void update(ll pos,ll val,ll n){
-    while(pos<=n){
-        BiTree[pos]+=val;
-        pos+=(pos)&(-pos);
+template <typename T>
+class Fenwick {
+public:
+    vector<T> fenw;
+    int n;
+
+    Fenwick(int _n) : n(_n) {
+        fenw.resize(n);
     }
-}
-ll get_range(ll pos){
-    ll res=0;
-    while(pos>0){
-        res+=BiTree[pos];
-        pos-=(pos)&(-pos);
+    void update(int x, T v) {
+        while (x < n) {
+            fenw[x] += v;
+            x = (x + 1);
+        }
     }
-    return res;
-}
+
+    T query(int x) {
+        T v{};
+        while (x >= 0) {
+            v += fenw[x];
+            x = (x & (x + 1)) - 1;
+        }
+        return v;
+    }
+
+     //Just of + operator
+     /*T query(int l, int r) {
+         return query(r) - query(l - 1);
+     }*/
+};
