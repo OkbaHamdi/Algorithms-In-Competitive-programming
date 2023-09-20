@@ -10,7 +10,8 @@ public:
     void update(int x, T v) {
         while (x < n) {
             fenw[x] += v;
-            x = (x + 1);
+            x+=(x&(-x));
+            //x = (x + 1);
         }
     }
 
@@ -18,7 +19,8 @@ public:
         T v{};
         while (x >= 0) {
             v += fenw[x];
-            x = (x & (x + 1)) - 1;
+            x-=(x&(-x));
+            //x = (x & (x + 1)) - 1;
         }
         return v;
     }
