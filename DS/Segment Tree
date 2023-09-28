@@ -5,23 +5,9 @@ class SegmentTree {
     vector<T> tree;
     F func;
 public:
-    //with vector
-    SegmentTree(const vector<T> &values, T neutral, const F& f) : func(f) {
+    SegmentTree(int sz,T neutral, const F& f) : func(f) {
         NEUTRAL = neutral;
-        n = values.size();
-        tree.resize(n*2);
-        // Build
-        for (int i=0; i < n; i++) {
-            tree[n+i] = values[i];
-        }
-        for (int i = n - 1; i > 0; --i) {
-            tree[i] = func(tree[i*2], tree[i*2+1]);
-        }
-    }
-    // without vector
-    SegmentTree(int sz,T value,T neutral, const F& f) : func(f) {
-        NEUTRAL = neutral;
-        n = sz;
+        n = (1 << (32 - __builtin_clz(sz)));
         tree.resize(n*2);
     }
 
@@ -49,12 +35,7 @@ public:
 /*
   the tree is 0-indexed
   query the range [l, r], l and r are inclusive
-  usage:
-  with vector
+  usage exemple:
   auto func = [&](ll a, ll b) -> ll { return a+b;};
-  SegmentTree<ll> st(v,0,func);
-  or:
-  without vector
-  auto func = [&](ll a, ll b) -> ll { return a+b;};
-  SegmentTree<ll> st(n,val,0,func);
+  SegmentTree<ll> st(n,0,func);
 */
