@@ -14,22 +14,16 @@ public:
     void update(int index, T value) {
         tree[index+n] = value;
         index = index + n;
-        for (int i = index; i > 1; i >>= 1){
-            tree[i/2] = func(tree[i], tree[i^1]);
-        }
+        for (int i = index; i > 1; i >>= 1)tree[i/2] = func(tree[i], tree[i^1]);
     }
 
     T query(int l, int r) {
-        T ans = NEUTRAL;
+        T ansL = NEUTRAL , ansR = NEUTRAL;
         for (l += n, r += n+1; l < r; l >>= 1, r >>= 1) {
-            if (l&1) {
-                ans = func(ans, tree[l++]);
-            }
-            if (r&1) {
-                ans = func(ans, tree[--r]);
-            }
+            if (l&1) ansL = func(ansL,tree[l++]);
+			if (r&1) ansR = func(tree[--r],ansR);
         }
-        return ans;
+        return func(ansL, ansR);
     }
 };
 /*
