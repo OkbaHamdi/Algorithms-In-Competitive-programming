@@ -21,7 +21,7 @@ public:
         T ansL = NEUTRAL , ansR = NEUTRAL;
         for (l += n, r += n+1; l < r; l >>= 1, r >>= 1) {
             if (l&1) ansL = func(ansL,tree[l++]);
-			if (r&1) ansR = func(tree[--r],ansR);
+	    if (r&1) ansR = func(tree[--r],ansR);
         }
         return func(ansL, ansR);
     }
