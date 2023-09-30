@@ -11,17 +11,19 @@ public:
         tree.resize(n*2);
     }
 
-    void update(int index, T value) {
-        tree[index+n] = value;
-        index = index + n;
-        for (int i = index; i > 1; i >>= 1)tree[i/2] = func(tree[i], tree[i^1]);
+    void update(int i, T value) {
+        tree[i+=n] = value;
+        while(i){
+            i>>= 1;
+            tree[i] = func(tree[2*i],tree[2*i+1]);
+        }
     }
 
     T query(int l, int r) {
         T ansL = NEUTRAL , ansR = NEUTRAL;
         for (l += n, r += n+1; l < r; l >>= 1, r >>= 1) {
             if (l&1) ansL = func(ansL,tree[l++]);
-	    if (r&1) ansR = func(tree[--r],ansR);
+			if (r&1) ansR = func(tree[--r],ansR);
         }
         return func(ansL, ansR);
     }
