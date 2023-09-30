@@ -9,7 +9,7 @@ My personal collection of competitive programming code, templates, tools...
 	"handle" : "L_7",
 	"organization" : "ENSI",
 	"rank" : "specialist",
-	"rating" : 1456,
+	"rating" : 1528,
 	"contribution" : -1,
 	"maxRank" : "expert",
 	"maxRating" : 1622,
