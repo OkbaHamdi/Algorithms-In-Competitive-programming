@@ -8,7 +8,7 @@ public:
     SegmentTree(int sz,T neutral, const F& f) : func(f) {
         NEUTRAL = neutral;
         n = (1 << (32 - __builtin_clz(sz)));
-        tree.resize(n*2);
+        tree.resize(n*2,NEUTRAL);
     }
 
     void update(int i, T value) {
