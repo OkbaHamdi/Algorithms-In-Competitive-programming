@@ -29,7 +29,7 @@ public:
     }
 };
 /*
-  the tree is 0-indexed
+  the tree is 1-indexed ( left of x is x*2 and right x is x*2+1) but array is 0-indexed
   query the range [l, r], l and r are inclusive
   usage exemple:
   auto func = [&](ll a, ll b) -> ll { return a+b;};
