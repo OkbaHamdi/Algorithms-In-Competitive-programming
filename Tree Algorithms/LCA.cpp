@@ -1,3 +1,5 @@
+const           int N=2e5+5;
+const           int L = log2(N)+1;
 int po[L];
 vector<int> adj[N];
 int par[N][L];
