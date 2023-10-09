@@ -34,8 +34,8 @@ typedef         pair<ll,ll>pl;
 const           int MOD=1000000007;
 const           ld eps=1e-7;
 const           double PI=acos(-1);
-const           int N=2e5+5;
 const           ll INF=1e18;
+const           int N=2e5+5;
 const           int L = log2(N)+1;
 void solve(){
 
