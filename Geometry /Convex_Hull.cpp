@@ -1,3 +1,4 @@
+//use point.cpp
 template<typename T>
 vector<Point<T>>hull(vector<Point<T>>&v){
     vector<Point<T>>ans={v[0],v[1]};
