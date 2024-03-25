@@ -15,3 +15,4 @@ class HashedString {
 		return (raw_val%M+M)%M;
 	}
 };
+vl HashedString::pow={1};
